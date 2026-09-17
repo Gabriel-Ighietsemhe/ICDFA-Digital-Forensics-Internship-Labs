@@ -45,4 +45,4 @@ CIP-B105-CS2-REGNO/
 
 ## 📖 Accessing the Full Report
 
-You can read the complete, professionally structured 21-page forensic report—complete with full chain-of-custody worksheets, evidentiary figures, TShark/Wireshark filter parameters, and the formal appendix—by navigating to the [report directory](../report/CIP-B105-CS2_C11-26-DFIT-17288-Gabriel_Ighietsemhe.pdf).
+You can read the complete, professionally structured 21-page forensic report—complete with full chain-of-custody worksheets, evidentiary figures, TShark/Wireshark filter parameters, and the formal appendix—by navigating to the [report directory](./report/CIP-B105-CS2_C11-26-DFIT-17288-Gabriel_Ighietsemhe.pdf).
