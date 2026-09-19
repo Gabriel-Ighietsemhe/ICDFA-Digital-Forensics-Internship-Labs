@@ -1,62 +1,103 @@
-CIP-B104-CS3: Rhino Hunting Digital Forensics Investigation
-Case Identifier: CIP-B104-CS3-REGNO
+# CIP-B104-CS3: Rhino Hunting Digital Forensics Investigation
 
-Assessment: Case Study 2 — USB, Steganography and Network Evidence Investigation
+**Case Identifier:** `CIP-B104-CS3-17288`
 
-Course: CIP-B104 Computer Forensics Case Study I (ICDFA)
+**Assessment:** Case Study 3 — USB Image Analysis and Deleted File-Recovery
 
-📌 Repository Overview
-This repository contains the structured investigative documentation, scripts, timelines, and audit registers compiled during the forensic examination of the Rhino Hunting Case. The investigation evaluates physical storage media (RHINOUSB.dd) alongside network capture streams (rhino.log, rhino2.log, rhino3.log) to uncover allocated, deleted, hidden, and transferred digital media assets, ultimately testing the scenario threshold regarding unique rhinoceros image possession.
+**Course:** CIP-B104 Computer Forensics Case Study I (ICDFA)
 
-📁 Repository Directory Structure
-Plaintext
-CIP-B104-CS3-REGNO/
-├── README.md                          # Repository documentation and guide
+**Analyst:** Gabriel Ighietsemhe (`C11/26/DFIT/17288`)
+
+**Date:** 12th September 2026
+
+---
+
+## 📌 Repository Overview
+
+This repository contains the digital forensic investigation documentation, technical findings, and evidentiary records for the **Rhino Hunting Case Study (CIP-B104-CS3)**. The examination evaluates a physical storage media image (`RHINOUSB.dd`) alongside network capture logs (`rhino.log`, `rhino2.log`, `rhino3.log`) to identify allocated, unallocated, carved, and transferred media assets, testing the scenario threshold regarding the possession of nine or more unique rhinoceros images.
+
+---
+
+## 📁 Repository Directory Structure
+
+```text
+CIP-B104-CS3-17288/
+├── README.md                                                          # Repository documentation and overview
 ├── report/
-│   └── CIP-B104-CS3_REGNO_FULLNAME.pdf # Final consolidated professional PDF forensic report
-├── evidence/
-│   ├── hashes/                        # Cryptographic hash manifests (MD5 / SHA-256)
-│   └── inventory/                     # Master provenance and deduplication tables
-├── timelines/
-│   └── integrated_timeline.csv        # Chronological Coordinated Universal Time (UTC) activity log
-├── registers/
-│   └── evidence_register.xlsx         # Evidence ID, source, pathway, extraction, and limitations matrix
-└── exhibits/                          # Numbered screenshots 
-🔬 Evidence Domains Covered
-Evidence Preparation & Provenance Control: Secure ingestion, integrity verification, and write-blocking of primary assets (RHINOUSB.dd, rhino.log, rhino2.log, rhino3.log).
+│   └── CIP-B104-CS3_C11-26-DFIT-17288-Gabriel_Ighietsemhe.pdf        # Consolidated 23-page professional PDF forensic report[cite: 5]
+└── screenshots/                                                          # Evidentiary screenshots and tool output logs[cite: 5]
 
-USB File System & Carving Analysis: Partitionless (superfloppy) FAT16 volume mapping, sector-0 anchoring, file-system traversal (fls, fsstat), and unallocated space carving via PhotoRec/Foremost.
+```
 
-Steganography Detection & Payload Extraction: Statistical analysis (stegdetect), dictionary password recovery (stegbreak with authorized case wordlist), and payload extraction (JPSeek).
+---
 
-FTP Traffic Forensics: Session reconstruction, command-response mapping (USER, PASS, RETR, STOR), file export (rhino1.jpg, rhino3.jpg), and encrypted archive recovery (contraband.zip extraction via fcrackzip).
+## 🔬 Evidence Ingestion & Cryptographic Verification
 
-HTTP & Executable Traffic Analysis: Stream dissection of web traffic (rhino2.log) yielding rhino4.jpg and rhino5.gif, alongside non-destructive static analysis of the transferred binary in rhino3.log.
+All primary evidence files were write-protected upon ingestion, and cryptographic MD5 integrity baselines were verified against case manifests:
 
-Master Deduplication & Final Opinion: Hash normalization, elimination of redundancy, integrated UTC timeline reconstruction, attribution limitation assessment, and final threshold evaluation.
+| Evidence Description | Filename | Size | Calculated MD5 Hash |
+| --- | --- | --- | --- |
+| **Seized USB Image**<br> | `RHINOUSB.dd`<br> | 260 MB | `80348c58eec4c328ef1f7709adc56a54`<br>
 
-🛠️ Tools & Environment
-All examinations were performed inside a controlled, isolated laboratory environment utilizing open-source and industry-standard forensic utilities:
+ | `c0d0093eb1664cd7b73f3a5225ae3f30`<br> |
+| **Network Capture Log 1 (FTP)**<br> | `rhino.log`<br> | 3.2 MB
 
-The Sleuth Kit (TSK) / Autopsy: Volume layout inspection and file-system traversal.
+ | `cd21eaf4acfb50f71ffff857d7968341`<br> |
+| **Network Capture Log 2 (HTTP)**<br> | `rhino2.log`<br> | 293 KB
 
-PhotoRec / Foremost: Deleted file carving from unallocated space.
+ | `7e29f9d67346df25faaf18efcd95fc30`<br> |
+| **Network Capture Log 3 (Static Binary)**<br> | `rhino3.log`<br> | 226 KB
 
-Stegdetect / Stegbreak / JPSeek: Detection and extraction of steganographic payloads.
 
-Wireshark / NetworkMiner: Network stream reconstruction and packet dissection.
+---
 
-Fcrackzip / OpenSSL: Archive cracking and cryptographic integrity verification (md5sum, sha256sum).
+## 🔍 Key Technical Findings
 
-📊 Summary of Deliverables Included in Submission
-Professional PDF Report: Structured precisely to ICDFA guidelines (11 core sections spanning legal authority, technical findings, timelines, and final forensic opinions).
+* **FAT16 File System & Volume Mapping:** Analysis (`fdisk -l`, `fls -o 0`) identified a partitionless (superfloppy) FAT16 architecture anchored directly at sector offset 0.
 
-Hash Manifest: Complete SHA-256 and MD5 records for all original evidence files and derived artifacts.
 
-Integrated Timeline: Normalized Coordinated Universal Time (UTC) activity ledger.
+* **File Carving from Unallocated Space:** Carving via PhotoRec recovered four distinct rhinoceros images from unallocated clusters where metadata had been unlinked. Accompanying artifacts linked the storage media to the local user account `Kamryn`.
 
-Master Provenance Register: Comprehensive tracking table linking every object from source evidence to extracted file and hash group.
 
-Exhibits: Logged tool outputs and numbered screenshots referenced directly from the formal report.
+* **FTP Stream Reconstruction (`rhino.log`):** Dissection of cleartext FTP sessions exposed user credentials (`gnome` / `gnome123`), recovered downloaded image assets (`rhino1.jpg`, `rhino3.jpg`), and identified an uploaded container (`contraband.zip`).
+
+
+* **Encrypted Archive Password Recovery:** Using `fcrackzip` paired with the approved dictionary wordlist, the password for `contraband.zip` was cracked as `pw monkey`. Extraction yielded `rhino2.jpg`, confirming cross-source duplication with USB evidence.
+
+
+* **HTTP Object Extraction (`rhino2.log`):** Dissection of web transaction streams isolated server responses containing binary image payloads, successfully extracting `rhino4.jpg` and `rhino5.gif`.
+
+
+* **Static Binary Evaluation (`rhino3.log`):** Non-destructive static string and header analysis was performed on the transferred executable binary without dynamic host execution.
+
+
+* **Deduplication & Final Forensic Opinion:** Cross-domain correlation across the physical USB image, carved clusters, FTP streams, encrypted ZIP containers, and HTTP logs confirmed that the deduplicated count of unique rhinoceros images successfully meets the case threshold criteria.
+
+
+
+---
+
+## 🛠️ Tools & Utilities Used
+
+* **The Sleuth Kit (TSK) / PhotoRec:** Partition mapping, file listing (`fls`), and unallocated space file carving.
+
+
+* **Wireshark:** Network packet dissection, TCP stream following, and protocol analysis.
+
+
+* **fcrackzip / ImageMagick:** Archive password recovery and image asset verification.
+
+
+* **OpenSSL / md5sum:** Cryptographic hash generation, verification, and deduplication.
+
+
+
+---
+
+## 📖 Accessing the Full Report
+
+The full, 23-page formal forensic report—including chain-of-custody worksheets, step-by-step terminal outputs, the normalized UTC timeline, and numbered evidentiary exhibits—is available in the [report directory](./report/CIP-B104-CS3_C11-26-DFIT-17288-Gabriel_Ighietsemhe.pdf).
+
+---
 
 Disclaimer: This repository contains historical training evidence created for the International Cybersecurity & Digital Forensics Academy (ICDFA). All recovered artifacts remain contained strictly within authorized educational parameters.
